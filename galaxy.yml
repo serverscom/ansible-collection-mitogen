@@ -1,0 +1,15 @@
+---
+namespace: psvmcc
+name: mitogen
+version: 0.3.3
+readme: README.md
+authors:
+description: collection of strategy for mitogen
+license:
+  - MIT
+tags: [ansible, mitogen]
+dependencies: {}
+repository: https://github.com/psvmcc/ansible-collection-mitogen
+documentation: https://github.com/psvmcc/ansible-collection-mitogen
+homepage: https://github.com/psvmcc/ansible-collection-mitogen
+issues: https://github.com/psvmcc/ansible-collection-mitogen
