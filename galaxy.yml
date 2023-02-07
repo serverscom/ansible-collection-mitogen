@@ -1,7 +1,7 @@
 ---
 namespace: psvmcc
 name: mitogen
-version: 0.3.3
+version: 0.0.1
 readme: README.md
 authors:
 description: collection of strategy for mitogen

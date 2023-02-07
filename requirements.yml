@@ -2,4 +2,4 @@
 collections:
   - name: https://github.com/psvmcc/ansible-collection-mitogen.git
     type: git
-    version: 0.3.3
+    version: 0.0.1
