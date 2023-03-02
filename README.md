@@ -9,7 +9,6 @@ ansible-galaxy collection install -r requirements.yml
 ## Usage
 Add to your ansible.cfg
 ```
-strategy_plugins = psvmcc.mitogen
 strategy = psvmcc.mitogen.mitogen_linear
 ```
 
