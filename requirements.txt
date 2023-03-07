@@ -1,2 +1,0 @@
-ansible==5.10.0
-mitogen==0.3.3

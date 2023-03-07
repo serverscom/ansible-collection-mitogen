@@ -2,13 +2,14 @@
 name = "ansible-collection-mitogen"
 version = "1.0.0"
 description = "Ansible collection to expose mitogen strategies with mitogen patching"
-authors = ["George Shuklin <george.shuklin@gmail.com>"]
+authors =["Sergey Putko", "George Shuklin <george.shuklin@gmail.com>"]
 license = "BSD/MIT"
 
 [tool.poetry.dependencies]
 python = "^3.10"
 ansible-core = "^2.14.3"
 black = "^23.1.0"
+mitogen = {git = "https://github.com/mitogen-hq/mitogen", rev = "master"}
 
 [tool.poetry.dev-dependencies]
 
