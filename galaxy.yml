@@ -1,5 +1,5 @@
 ---
-namespace: psvmcc
+namespace: serverscom
 name: mitogen
 version: 0.0.1
 readme: README.md
@@ -9,7 +9,7 @@ license:
   - MIT
 tags: [ansible, mitogen]
 dependencies: {}
-repository: https://github.com/psvmcc/ansible-collection-mitogen
-documentation: https://github.com/psvmcc/ansible-collection-mitogen
-homepage: https://github.com/psvmcc/ansible-collection-mitogen
-issues: https://github.com/psvmcc/ansible-collection-mitogen
+repository: https://github.com/serverscom/ansible-collection-mitogen
+documentation: https://github.com/serverscom/ansible-collection-mitogen
+homepage: https://github.com/serverscom/ansible-collection-mitogen
+issues: https://github.com/serverscom/ansible-collection-mitogen
