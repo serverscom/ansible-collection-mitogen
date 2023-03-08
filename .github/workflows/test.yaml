@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,3 +24,6 @@ jobs:
           poetry install
       - name: Run tests
         run: poetry run molecule converge -- -vvvvvv
+        env:
+          ANSIBLE_FORCE_COLOR: "1"
+          PY_COLORS: "1"
