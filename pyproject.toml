@@ -10,6 +10,7 @@ python = "^3.10"
 ansible-core = "^2.14.3"
 black = "^23.1.0"
 mitogen = {git = "https://github.com/mitogen-hq/mitogen", rev = "master"}
+molecule = "^4.0.4"
 
 [tool.poetry.dev-dependencies]
 
