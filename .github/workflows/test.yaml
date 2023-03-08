@@ -23,4 +23,4 @@ jobs:
           pip install poetry
           poetry install
       - name: Check mitogen_linear strategy
-        run: poetry run molecule converge
+        run: poetry run molecule converge -- -vvvvvv
