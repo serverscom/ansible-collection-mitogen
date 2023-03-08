@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: localhost
+  gather_facts: false
+  strategy: serverscom.mitogen.mitogen_linear
+  tasks:
+    - name: Check command
+      command: whoami
+      changed_when: false
