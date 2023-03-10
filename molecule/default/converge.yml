@@ -1,8 +1,56 @@
 ---
-- name: Converge
+- name: Converge with mitogen_linear/local
   hosts: localhost
   gather_facts: false
   strategy: serverscom.mitogen.mitogen_linear
+  tasks:
+    - name: Check command
+      command: whoami
+      changed_when: false
+
+- name: Converge with mitogen_free/local
+  hosts: localhost
+  gather_facts: false
+  strategy: serverscom.mitogen.mitogen_free
+  tasks:
+    - name: Check command
+      command: whoami
+      changed_when: false
+
+- name: Converge with mitogen_host_pinned/local
+  hosts: localhost
+  gather_facts: false
+  strategy: serverscom.mitogen.mitogen_host_pinned
+  tasks:
+    - name: Check command
+      command: whoami
+      changed_when: false
+
+- name: Converge with mitogen_linear/ssh
+  hosts: instance
+  connection: ssh
+  gather_facts: false
+  strategy: serverscom.mitogen.mitogen_linear
+  tasks:
+    - name: Check command
+      command: whoami
+      changed_when: false
+
+- name: Converge with mitogen_free/ssh
+  hosts: instance
+  connection: ssh
+  gather_facts: false
+  strategy: serverscom.mitogen.mitogen_free
+  tasks:
+    - name: Check command
+      command: whoami
+      changed_when: false
+
+- name: Converge with mitogen_host_pinned/ssh
+  hosts: instance
+  connection: ssh
+  gather_facts: false
+  strategy: serverscom.mitogen.mitogen_host_pinned
   tasks:
     - name: Check command
       command: whoami
