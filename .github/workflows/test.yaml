@@ -8,11 +8,24 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  local:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
+      - name: Install openssh
+        run: |
+          sudo apt update
+          sudo apt install -y openssh-server openssh-client
+
+      - name: Generate openssh key and trust it
+        run: |
+          mkdir .ssh
+          chmod 0700 .ssh
+          ssh-keygen -f .ssh/id_rsa </dev/null
+          cp .ssh/id_rsa.pub .ssh/authorized_keys
+          chmod 0600 .ssh/*
+
       - name: Set up Python 3.10
         uses: actions/setup-python@v3
         with:
@@ -22,7 +35,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install poetry==1.1.14
           poetry install
-      - name: Run tests
+      - name: Run local tests
         run: poetry run molecule converge -- -vvvvvv
         env:
           ANSIBLE_FORCE_COLOR: "1"
