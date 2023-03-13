@@ -7,13 +7,10 @@ Ansible strategy plugin wrapper to patch mitogen version requirements.
 
 DOCUMENTATION = """
 ---
-name: serverscom.mitogen.mitogen
-author:
-    - Sergey Putko
-    - George Shuklin <george.shuklin@gmail.com>
-author:
-    - Sergey Putko
-    - George Shuklin <george.shuklin@gmail.com>
+name: mitogen
+author: |
+    Sergey Putko <psvmcc+ansible-galaxy@gmail.com>
+    George Shuklin <george.shuklin@gmail.com>
 description: Ansible strategy plugin wrapper to patch mitogen version requirements.
 short_description: Mitogen patching strategy
 """
