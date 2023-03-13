@@ -1,0 +1,16 @@
+---
+- name: Create
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Dump instance config
+      ansible.builtin.copy:
+        content: |
+          - instance: "{{ molecule_yml.platforms[0].name }}"
+            address: 127.0.0.1
+            port: 22
+            identity_file: .ssh/id_rsa
+        dest: "{{ molecule_instance_config }}"
+        mode: 0600
+
