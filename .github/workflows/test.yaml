@@ -39,11 +39,11 @@ jobs:
           pip install poetry==1.1.14
           poetry install
 
-      - name: Run linting
+      - name: Black
         run: poetry run black plugins/ --check
-        env:
-          ANSIBLE_FORCE_COLOR: "1"
-          PY_COLORS: "1"
+
+      - name: Yamllint
+        run: poetry run black plugins/ --check
 
       - name: Run local tests
         run: poetry run molecule converge -- -vvvvvv
