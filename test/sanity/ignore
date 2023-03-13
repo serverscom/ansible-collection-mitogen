@@ -1,2 +1,0 @@
-plugins/strategy/patching.py
-plugins/modules/*:E105 # ignore license check

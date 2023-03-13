@@ -1,0 +1,2 @@
+plugins/strategy/patching.py validate-modules!skip
+plugins/modules/*:missing-gplv3-license # ignore license check
