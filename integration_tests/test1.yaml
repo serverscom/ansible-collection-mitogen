@@ -1,0 +1,9 @@
+---
+- name: Try to use strategy
+  gather_facts: false
+  strategy: serverscom.mitogen.mitogen_linear
+  hosts: test
+  tasks:
+    - name: test
+      command: whoami
+      changed_when: false
