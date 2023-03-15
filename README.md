@@ -9,7 +9,7 @@ ansible-galaxy collection install -r requirements.yml
 ## Usage
 Add to your ansible.cfg
 ```
-strategy = psvmcc.mitogen.mitogen_linear
+strategy = serverscom.mitogen.mitogen_linear
 ```
 
 > based on https://github.com/mitogen-hq/mitogen/issues/961#issuecomment-1236291061
