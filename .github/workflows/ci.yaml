@@ -74,3 +74,10 @@ jobs:
         working-directory: integration_tests
         env:
           ANSIBLE_STRATEGY: psvmcc.mitogen.mitogen_linear
+
+      - name: Publish on Galaxy
+        if: ${{ endsWith(github.ref, steps.version.outputs.version) }}
+        run:
+          ansible-galaxy collection publish
+            ansible_collections/serverscom/mitogen/serverscom-mitogen-${{ steps.version.outputs.version }}.tar.gz
+            --api-key="${{ secrets.GALAXY_API_TOKEN }}"
