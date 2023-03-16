@@ -53,7 +53,7 @@ jobs:
         run: cp -r README.md plugins meta galaxy.yml --target-directory=ansible_collections/serverscom/mitogen
 
       - name: Packaging
-        run: ansible-galaxy collection build
+        run: poetry run ansible-galaxy collection build
         working-directory: ansible_collections/serverscom/mitogen
 
       - name: Extract version
@@ -63,15 +63,15 @@ jobs:
           echo "::set-output name=version::$version"
 
       - name: Try to install collection
-        run: ansible-galaxy collection install serverscom-mitogen-${{ steps.version.outputs.version }}.tar.gz
+        run: poetry run ansible-galaxy collection install serverscom-mitogen-${{ steps.version.outputs.version }}.tar.gz
         working-directory: ansible_collections/serverscom/mitogen
 
       - name: Run with strategy stanza in play
-        run: ansible-playbook -i inventory.yaml test1.yaml
+        run: poetry run  ansible-playbook -i inventory.yaml test1.yaml
         working-directory: integration_tests
 
       - name: Run with strategy in environment variable
-        run: ansible-playbook -i inventory.yaml test1.yaml -vvv|grep ansible_mitogen.connection >/dev/null
+        run: poetry run ansible-playbook -i inventory.yaml test1.yaml -vvv|grep ansible_mitogen.connection >/dev/null
         working-directory: integration_tests
         env:
           ANSIBLE_STRATEGY: psvmcc.mitogen.mitogen_linear
@@ -79,6 +79,7 @@ jobs:
       - name: Publish on Galaxy
         if: ${{ endsWith(github.ref, steps.version.outputs.version) }}
         run:
-          ansible-galaxy collection publish
-            ansible_collections/serverscom/mitogen/serverscom-mitogen-${{ steps.version.outputs.version }}.tar.gz
+          poetry run ansible-galaxy collection publish
+            serverscom-mitogen-${{ steps.version.outputs.version }}.tar.gz
             --api-key="${{ secrets.GALAXY_API_TOKEN }}"
+        working-directory: ansible_collections/serverscom/mitogen
