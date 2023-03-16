@@ -11,6 +11,10 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      ANSIBLE_HOST_KEY_CHECKING: "False"
+      ANSIBLE_FORCE_COLOR: "1"
+      PY_COLORS: "1"
 
     steps:
       - name: Checkout
@@ -42,9 +46,6 @@ jobs:
 
       - name: Run local tests
         run: poetry run molecule converge -- -vvvvvv
-        env:
-          ANSIBLE_FORCE_COLOR: "1"
-          PY_COLORS: "1"
 
       - name: Create directory for clean build
         run: mkdir -p ansible_collections/serverscom/mitogen
