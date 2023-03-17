@@ -4,7 +4,9 @@ name: mitogen
 version: 1.0.0
 readme: README.md
 authors:
-description: collection of strategy for mitogen
+  - Sergey Putko <psvmcc+ansible-galaxy@gmail.com>
+  - George Shuklin <george.shuklin@gmail.com>
+description: Mitogen strategy as collection
 license:
   - MIT
 tags: [ansible, mitogen]
