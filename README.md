@@ -37,7 +37,7 @@ strategy = serverscom.mitogen.mitogen_linear
 ### Environment variable
 You can set `ANSIBLE_STRATEGY` environment variable:
 
-``
+```
 ANSIBLE_STRATEGY=serverscom.mitogen.mitogen_linear ansible-playbook ...
 ```
 
