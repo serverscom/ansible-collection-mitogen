@@ -2,7 +2,8 @@
 name: CI
 
 "on":
-  workflow_call:
+  push:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -10,6 +11,10 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      ANSIBLE_HOST_KEY_CHECKING: "False"
+      ANSIBLE_FORCE_COLOR: "1"
+      PY_COLORS: "1"
 
     steps:
       - name: Checkout
@@ -41,9 +46,6 @@ jobs:
 
       - name: Run local tests
         run: poetry run molecule converge -- -vvvvvv
-        env:
-          ANSIBLE_FORCE_COLOR: "1"
-          PY_COLORS: "1"
 
       - name: Create directory for clean build
         run: mkdir -p ansible_collections/serverscom/mitogen
@@ -52,7 +54,7 @@ jobs:
         run: cp -r README.md plugins meta galaxy.yml --target-directory=ansible_collections/serverscom/mitogen
 
       - name: Packaging
-        run: ansible-galaxy collection build
+        run: poetry run ansible-galaxy collection build
         working-directory: ansible_collections/serverscom/mitogen
 
       - name: Extract version
@@ -62,15 +64,23 @@ jobs:
           echo "::set-output name=version::$version"
 
       - name: Try to install collection
-        run: ansible-galaxy collection install serverscom-mitogen-${{ steps.version.outputs.version }}.tar.gz
+        run: poetry run ansible-galaxy collection install serverscom-mitogen-${{ steps.version.outputs.version }}.tar.gz
         working-directory: ansible_collections/serverscom/mitogen
 
       - name: Run with strategy stanza in play
-        run: ansible-playbook -i inventory.yaml test1.yaml
+        run: poetry run  ansible-playbook -i inventory.yaml test1.yaml
         working-directory: integration_tests
 
       - name: Run with strategy in environment variable
-        run: ansible-playbook -i inventory.yaml test1.yaml -vvv|grep ansible_mitogen.connection >/dev/null
+        run: poetry run ansible-playbook -i inventory.yaml test1.yaml -vvv|grep ansible_mitogen.connection >/dev/null
         working-directory: integration_tests
         env:
           ANSIBLE_STRATEGY: psvmcc.mitogen.mitogen_linear
+
+      - name: Publish on Galaxy
+        if: ${{ endsWith(github.ref, steps.version.outputs.version) }}
+        run:
+          poetry run ansible-galaxy collection publish
+            serverscom-mitogen-${{ steps.version.outputs.version }}.tar.gz
+            --api-key="${{ secrets.GALAXY_API_TOKEN }}"
+        working-directory: ansible_collections/serverscom/mitogen
