@@ -6,7 +6,7 @@ authors =["Sergey Putko <psvmcc+ansible-galaxy@gmail.com>", "George Shuklin <geo
 license = "BSD/MIT"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.9, <3.12"
 ansible-core = "2.15"
 black = "^23.1.0"
 mitogen = {git = "https://github.com/mitogen-hq/mitogen", rev = "master"}
