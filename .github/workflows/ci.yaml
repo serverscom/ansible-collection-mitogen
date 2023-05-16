@@ -45,7 +45,7 @@ jobs:
           poetry install
 
       - name: Run local tests
-        run: poetry run molecule converge -- -vvvvvv
+        run: poetry run molecule converge
 
       - name: Create directory for clean build
         run: mkdir -p ansible_collections/serverscom/mitogen
