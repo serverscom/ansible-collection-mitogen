@@ -5,6 +5,11 @@ live patching for Mitogen restrictions in Ansible
 versions, making it possible to use Mitogen
 with the current Ansible version.
 
+Tested versions of ansible-core:
+
+* 2.14
+* 2.15
+
 It patches `ansible_mitogen` code and unpatches it
 back right after module import, so the original
 files are kept intact.
