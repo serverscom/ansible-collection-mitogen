@@ -7,7 +7,7 @@ license = "BSD/MIT"
 
 [tool.poetry.dependencies]
 python = ">=3.9, <3.12"
-ansible-core = "2.15"
+ansible-core = ">=2.13, <2.16"
 black = "^23.1.0"
 mitogen = {git = "https://github.com/mitogen-hq/mitogen", rev = "master"}
 molecule = ">=5.0.0"
