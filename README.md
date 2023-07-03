@@ -15,10 +15,14 @@ back right after module import, so the original
 files are kept intact.
 
 ## Install
-To use this collection, you need to install Mitogen from the master branch:
+To use this collection, you need to install Mitogen. Up to a moment you've have
+to use master from mitogen repo (`pip install git+https://github.com/mitogen-hq/mitogen@master`),
+but there was a release of version 0.3.4 on 2023-07-03 which made it unnecessary.
+
+Mitogen installation:
 
 ```bash
-pip install git+https://github.com/mitogen-hq/mitogen@master
+pip install mitogen==0.3.4
 ```
 
 Then, you need to install this collection:
