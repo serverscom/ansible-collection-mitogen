@@ -9,6 +9,7 @@ Tested versions of ansible-core:
 
 * 2.14
 * 2.15
+* 2.16
 
 It patches `ansible_mitogen` code and unpatches it
 back right after module import, so the original

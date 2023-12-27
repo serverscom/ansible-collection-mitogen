@@ -28,7 +28,7 @@ def loaders_path():
 
 class patch_version(ContextDecorator):
     ORIG_LINE = "ANSIBLE_VERSION_MAX = (2, 13)\n"
-    PATCH_LINE = "ANSIBLE_VERSION_MAX = (2, 15)\n"
+    PATCH_LINE = "ANSIBLE_VERSION_MAX = (2, 16)\n"
 
     def __enter__(self):
         self.patched = False
@@ -48,7 +48,7 @@ class patch_version(ContextDecorator):
             with open(self.lp, "w") as dest:
                 for line in source.readlines():
                     if line == "ANSIBLE_VERSION_MAX = (2, 13)\n":
-                        line = "ANSIBLE_VERSION_MAX = (2, 15)\n"
+                        line = "ANSIBLE_VERSION_MAX = (2, 16)\n"
                     dest.write(line)
         return self
 
