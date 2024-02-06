@@ -47,8 +47,8 @@ class patch_version(ContextDecorator):
         with open(self.lp_orig) as source:
             with open(self.lp, "w") as dest:
                 for line in source.readlines():
-                    if line == ORIG_LINE:
-                        line = PATCH_LINE
+                    if line == self.ORIG_LINE:
+                        line = self.PATCH_LINE
                     dest.write(line)
         return self
 
