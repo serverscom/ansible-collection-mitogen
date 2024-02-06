@@ -1,25 +1,23 @@
 # Collection for using Mitogen strategy
-This collection allows for using Mitogen strategy
-without the need to mess with paths. It also performs
-live patching for Mitogen restrictions in Ansible
-versions, making it possible to use Mitogen
-with the current Ansible version.
+
+This collection allows to use [Mitogen](https://github.com/mitogen-hq/mitogen)
+strategy without the need to specify absolute path to the strategy file.
+
+It also performs live patching for Mitogen restrictions in Ansible
+versions, making it possible to use Mitogen with the current Ansible version.
 
 Tested versions of ansible-core:
 
 * 2.14
 * 2.15
+* 2.16
 
 It patches `ansible_mitogen` code and unpatches it
 back right after module import, so the original
 files are kept intact.
 
 ## Install
-To use this collection, you need to install Mitogen. Up to a moment you've have
-to use master from mitogen repo (`pip install git+https://github.com/mitogen-hq/mitogen@master`),
-but there was a release of version 0.3.4 on 2023-07-03 which made it unnecessary.
-
-Mitogen installation:
+To use this collection, you need to install Mitogen:
 
 ```bash
 pip install mitogen==0.3.4
@@ -50,9 +48,11 @@ You can set `ANSIBLE_STRATEGY` environment variable:
 ANSIBLE_STRATEGY=serverscom.mitogen.mitogen_linear ansible-playbook ...
 ```
 
-### strategy stanza
+(This is my preferred way to use Mitogen).
 
-You can use `strategy` stanza in a play:
+### Strategy stanza
+
+You can use a `strategy` stanza in a play:
 
 ```
 - hosts: all
@@ -79,6 +79,7 @@ based on @ITD27M01 idea: https://github.com/mitogen-hq/mitogen/issues/961#issuec
 # Disclamer
 Servers.com is not responsible for any problems that may arise
 during the use of this collection.
+
 Mitogen is a separate project (https://github.com/mitogen-hq/mitogen)
 that is well-known for speeding up Ansible in exchange for multiple
 stability issues. Servers.com does not provide support for
@@ -86,4 +87,3 @@ Mitogen-specific issues and may only address issues related
 to imports and/or patching of Mitogen.
 
 If you want to make Mitogen better, please help upstream.
-
