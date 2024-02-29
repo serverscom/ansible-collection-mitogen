@@ -1,0 +1,11 @@
+---
+- name: Check of unsafe handing
+  hosts: test
+  gather_facts: false
+  tasks:
+    - name: "known bug to cause trace for mitogen with ansible 2.16"
+      check_mode: true
+      ansible.builtin.package:
+        name: "vim"
+        state: present
+
