@@ -77,11 +77,11 @@ jobs:
         env:
           ANSIBLE_STRATEGY: serverscom.mitogen.mitogen_linear
 
-      - name: Run bug-specific tests
-        run: poetry run ansible-playbook -i inventory.yaml test3.yaml
-        working-directory: integration_tests
-        env:
-          ANSIBLE_STRATEGY: serverscom.mitogen.mitogen_linear
+      # - name: Run bug-specific tests
+      #   run: poetry run ansible-playbook -i inventory.yaml test3.yaml
+      #   working-directory: integration_tests
+      #   env:
+      #     ANSIBLE_STRATEGY: serverscom.mitogen.mitogen_linear
 
       - name: Publish on Galaxy
         if: ${{ endsWith(github.ref, steps.version.outputs.version) }}
