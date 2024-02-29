@@ -19,11 +19,49 @@ from contextlib import ContextDecorator
 import os
 
 
+# Written by @AKrumov
+# https://github.com/mitogen-hq/mitogen/issues/1034#issuecomment-1851557386
+patch_1034_v1 = """
+--- core.old    2024-02-29 14:53:29.478417261 +0200
++++ core.py     2024-02-29 14:53:48.846102667 +0200
+@@ -842,11 +842,15 @@
+         s, n = LATIN1_CODEC.encode(s)
+         return s
+
++    def _unpickle_ansible_unsafe_text(self, serialized_obj):
++        return serialized_obj
++
+     def _find_global(self, module, func):
+         \"""
+         Return the class implementing `module_name.class_name` or raise
+         `StreamError` if the module is not whitelisted.
+         \"""
++        print(module, __name__)
+         if module == __name__:
+             if func == '_unpickle_call_error' or func == 'CallError':
+                 return _unpickle_call_error
+@@ -860,6 +864,8 @@
+                 return Secret
+             elif func == 'Kwargs':
+                 return Kwargs
++        elif module == 'ansible.utils.unsafe_proxy' and func == 'AnsibleUnsafeText':
++            return self._unpickle_ansible_unsafe_text
+         elif module == '_codecs' and func == 'encode':
+             return self._unpickle_bytes
+         elif module == '__builtin__' and func == 'bytes':
+"""
+
+
 def loaders_path():
     import ansible_mitogen
 
     loaders_path = os.path.join(os.path.dirname(ansible_mitogen.__file__), "loaders.py")
     return loaders_path
+
+
+def core_path():
+    from mitogen import core
+    return core.__file__
 
 
 class patch_version(ContextDecorator):
