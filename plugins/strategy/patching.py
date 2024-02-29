@@ -130,6 +130,16 @@ class patches(ContextDecorator):
         core_module_orig = core_module + ".orig"
         self.mv(core_module, core_module_orig)
 
+        with open(core_module_orig, "r") as f:
+            module_lines = f.readlines()
+
+        diff = difflib.unified_diff(module_lines, patch_1034_v1.splitlines())
+
+        patched_module_lines = list(difflib.restore(diff, 1))
+
+        with open(core_module, "w") as f:
+            f.writelines(patched_module_lines)
+
     def __exit__(self, *exc):
         if self.patched:
             for rename in self.renames:
