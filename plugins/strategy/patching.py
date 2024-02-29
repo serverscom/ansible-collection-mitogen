@@ -17,6 +17,7 @@
 
 from contextlib import ContextDecorator
 import os
+import difflib
 
 
 # Written by @AKrumov
@@ -61,12 +62,17 @@ def loaders_path():
 
 def core_path():
     from mitogen import core
+
     return core.__file__
 
 
 class patches(ContextDecorator):
     ORIG_LINE = "ANSIBLE_VERSION_MAX = (2, 13)\n"
     PATCH_LINE = "ANSIBLE_VERSION_MAX = (2, 16)\n"
+
+    def mv(self, src, dst):
+        os.move(src, dst)
+        self.renames.append({"module": src, "original": dst})
 
     def __enter__(self):
         # did this process patched it or it's concurrent process?
@@ -103,6 +109,7 @@ class patches(ContextDecorator):
         # lock for patching.
 
         self.patched = True
+
         # version patch
         self.renames.append(
             {
@@ -117,6 +124,11 @@ class patches(ContextDecorator):
                         line = self.PATCH_LINE
                     dest.write(line)
         return self
+
+        # bug 1034 patch
+        core_module = core_path()
+        core_module_orig = core_module + ".orig"
+        self.mv(core_module, core_module_orig)
 
     def __exit__(self, *exc):
         if self.patched:
