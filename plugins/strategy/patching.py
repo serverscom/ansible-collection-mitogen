@@ -70,25 +70,49 @@ class patch_version(ContextDecorator):
     PATCH_LINE = "ANSIBLE_VERSION_MAX = (2, 16)\n"
 
     def __enter__(self):
+        # did this process patched it or it's concurrent process?
         self.patched = False
-        self.lp = loaders_path()
-        self.lp_orig = self.lp + ".orig"
+        self.renames = []
+        loader_module_file = loaders_path()
+        loader_module_file_orig = loader_module_file + ".orig"
 
-        with open(self.lp) as f:
-            if not self.ORIG_LINE in f.read():
+        # pre-guard
+        with open(loader_module_file) as f:
+            if self.ORIG_LINE not in f.read():
                 return self
 
+        # atomic-lock
         try:
-            os.link(self.lp, self.lp_orig)
-            os.unlink(self.lp)
+            os.link(loader_module_file, loader_module_file_orig)
+            os.unlink(loader_module_file)
         except FileExistsError:
             raise Exception(
-                f"Race condition with other mitogen patching, or stale {lp_orig} file"
+                f"Race other patching, or stale {loader_module_file_orig} file"
             )
 
+        # post-guard
+        with open(loader_module_file_orig) as f:
+            if self.ORIG_LINE not in f.read():
+                # unlucky situation, we moved file after someone patched it
+                # We move it back and do not touch anything
+                os.rename(loader_module_file_orig, loader_module_file)
+                raise Exception(
+                    "Race post-condition with other mitogen patching, aborting"
+                )
+
+        # if we moved file, and the moved file is not patched, we have exclusive
+        # lock for patching.
+
         self.patched = True
-        with open(self.lp_orig) as source:
-            with open(self.lp, "w") as dest:
+        # version patch
+        self.renames.append(
+            {
+                "module": loader_module_file,
+                "original": loader_module_file_orig,
+            }
+        )
+        with open(loader_module_file_orig) as source:
+            with open(loader_module_file, "w") as dest:
                 for line in source.readlines():
                     if line == self.ORIG_LINE:
                         line = self.PATCH_LINE
@@ -97,5 +121,6 @@ class patch_version(ContextDecorator):
 
     def __exit__(self, *exc):
         if self.patched:
-            os.rename(self.lp_orig, self.lp)
+            for rename in self.renames:
+                os.rename(rename["original"], rename["module"])
         return False
