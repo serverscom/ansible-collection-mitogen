@@ -61,6 +61,7 @@ def loaders_path():
 
 def core_path():
     from mitogen import core
+
     return core.__file__
 
 
@@ -77,10 +78,14 @@ class patch_version(ContextDecorator):
             if not self.ORIG_LINE in f.read():
                 return self
 
-        if os.path.isfile(self.lp_orig):
-            return self
+        try:
+            os.link(self.lp, self.lp_orig)
+            os.unlink(self.lp)
+        except FileExistsError:
+            raise Exception(
+                f"Race condition with other mitogen patching, or stale {lp_orig} file"
+            )
 
-        os.rename(self.lp, self.lp_orig)
         self.patched = True
         with open(self.lp_orig) as source:
             with open(self.lp, "w") as dest:
