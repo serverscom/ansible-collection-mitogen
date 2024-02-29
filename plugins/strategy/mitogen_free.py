@@ -34,5 +34,5 @@ short_description: Mitogen patching strategy
 
 from . import patching
 
-with patching.patch_version():
+with patching.patches():
     from ansible_mitogen.plugins.strategy.mitogen_free import *

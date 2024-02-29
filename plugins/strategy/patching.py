@@ -61,11 +61,10 @@ def loaders_path():
 
 def core_path():
     from mitogen import core
-
     return core.__file__
 
 
-class patch_version(ContextDecorator):
+class patches(ContextDecorator):
     ORIG_LINE = "ANSIBLE_VERSION_MAX = (2, 13)\n"
     PATCH_LINE = "ANSIBLE_VERSION_MAX = (2, 16)\n"
 
