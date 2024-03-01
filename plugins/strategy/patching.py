@@ -17,6 +17,39 @@
 
 from contextlib import ContextDecorator
 import os
+import difflib
+
+
+# Written by @AKrumov
+# https://github.com/mitogen-hq/mitogen/issues/1034#issuecomment-1851557386
+patch_1034_v1 = """
+--- core.old    2024-02-29 14:53:29.478417261 +0200
++++ core.py     2024-02-29 14:53:48.846102667 +0200
+@@ -842,11 +842,15 @@
+         s, n = LATIN1_CODEC.encode(s)
+         return s
+
++    def _unpickle_ansible_unsafe_text(self, serialized_obj):
++        return serialized_obj
++
+     def _find_global(self, module, func):
+         \"""
+         Return the class implementing `module_name.class_name` or raise
+         `StreamError` if the module is not whitelisted.
+         \"""
+         if module == __name__:
+             if func == '_unpickle_call_error' or func == 'CallError':
+                 return _unpickle_call_error
+@@ -860,6 +864,8 @@
+                 return Secret
+             elif func == 'Kwargs':
+                 return Kwargs
++        elif module == 'ansible.utils.unsafe_proxy' and func == 'AnsibleUnsafeText':
++            return self._unpickle_ansible_unsafe_text
+         elif module == '_codecs' and func == 'encode':
+             return self._unpickle_bytes
+         elif module == '__builtin__' and func == 'bytes':
+"""
 
 
 def loaders_path():
@@ -26,33 +59,88 @@ def loaders_path():
     return loaders_path
 
 
-class patch_version(ContextDecorator):
+def core_path():
+    from mitogen import core
+
+    return core.__file__
+
+
+class patches(ContextDecorator):
     ORIG_LINE = "ANSIBLE_VERSION_MAX = (2, 13)\n"
     PATCH_LINE = "ANSIBLE_VERSION_MAX = (2, 16)\n"
 
-    def __enter__(self):
-        self.patched = False
-        self.lp = loaders_path()
-        self.lp_orig = self.lp + ".orig"
+    def mv(self, src, dst):
+        os.move(src, dst)
+        self.renames.append({"module": src, "original": dst})
 
-        with open(self.lp) as f:
-            if not self.ORIG_LINE in f.read():
+    def __enter__(self):
+        # did this process patched it or it's concurrent process?
+        self.patched = False
+        self.renames = []
+        loader_module_file = loaders_path()
+        loader_module_file_orig = loader_module_file + ".orig"
+
+        # pre-guard
+        with open(loader_module_file) as f:
+            if self.ORIG_LINE not in f.read():
                 return self
 
-        if os.path.isfile(self.lp_orig):
-            return self
+        # atomic-lock
+        try:
+            os.link(loader_module_file, loader_module_file_orig)
+            os.unlink(loader_module_file)
+        except FileExistsError:
+            raise Exception(
+                f"Race other patching, or stale {loader_module_file_orig} file"
+            )
 
-        os.rename(self.lp, self.lp_orig)
+        # post-guard
+        with open(loader_module_file_orig) as f:
+            if self.ORIG_LINE not in f.read():
+                # unlucky situation, we moved file after someone patched it
+                # We move it back and do not touch anything
+                os.rename(loader_module_file_orig, loader_module_file)
+                raise Exception(
+                    "Race post-condition with other mitogen patching, aborting"
+                )
+
+        # if we moved file, and the moved file is not patched, we have exclusive
+        # lock for patching.
+
         self.patched = True
-        with open(self.lp_orig) as source:
-            with open(self.lp, "w") as dest:
+
+        # version patch
+        self.renames.append(
+            {
+                "module": loader_module_file,
+                "original": loader_module_file_orig,
+            }
+        )
+        with open(loader_module_file_orig) as source:
+            with open(loader_module_file, "w") as dest:
                 for line in source.readlines():
                     if line == self.ORIG_LINE:
                         line = self.PATCH_LINE
                     dest.write(line)
         return self
 
+        # bug 1034 patch
+        core_module = core_path()
+        core_module_orig = core_module + ".orig"
+        self.mv(core_module, core_module_orig)
+
+        with open(core_module_orig, "r") as f:
+            module_lines = f.readlines()
+
+        diff = difflib.unified_diff(module_lines, patch_1034_v1.splitlines())
+
+        patched_module_lines = list(difflib.restore(diff, 1))
+
+        with open(core_module, "w") as f:
+            f.writelines(patched_module_lines)
+
     def __exit__(self, *exc):
         if self.patched:
-            os.rename(self.lp_orig, self.lp)
+            for rename in self.renames:
+                os.rename(rename["original"], rename["module"])
         return False
