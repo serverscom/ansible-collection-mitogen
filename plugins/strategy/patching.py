@@ -37,7 +37,6 @@ patch_1034_v1 = """
          Return the class implementing `module_name.class_name` or raise
          `StreamError` if the module is not whitelisted.
          \"""
-+        print(module, __name__)
          if module == __name__:
              if func == '_unpickle_call_error' or func == 'CallError':
                  return _unpickle_call_error
