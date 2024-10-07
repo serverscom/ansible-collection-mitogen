@@ -15,7 +15,17 @@ description: Ansible strategy plugin wrapper to patch mitogen version requiremen
 short_description: Mitogen patching strategy
 """
 
-from . import patching
+import importlib.metadata
 
-with patching.patch_version():
+try:
+    mitogen_version = importlib.metadata.version("mitogen")
+except importlib.metadata.PackageNotFoundError:
+    raise ImportError("Unable to load mitogen module.")
+
+if mitogen_version == "0.3.4":
+    from . import patching
+
+    with patching.patch_version():
+        from ansible_mitogen.plugins.strategy.mitogen_host_pinned import *
+else:
     from ansible_mitogen.plugins.strategy.mitogen_host_pinned import *

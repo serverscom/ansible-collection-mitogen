@@ -6,10 +6,10 @@ authors =["Sergey Putko <psvmcc+ansible-galaxy@gmail.com>", "George Shuklin <geo
 license = "BSD/MIT"
 
 [tool.poetry.dependencies]
-python = ">=3.9, <3.12"
-ansible-core = ">=2.13, <2.17"
+python = ">=3.10, <3.13"
+ansible-core = ">=2.17, <2.18"
 black = "^23.1.0"
-mitogen = "0.3.4"
+mitogen = "0.3.12"
 molecule = ">=5.0.0"
 yamllint = "^1.29.0"
 

@@ -31,8 +31,17 @@ short_description: Mitogen patching strategy
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import importlib.metadata
 
-from . import patching
+try:
+    mitogen_version = importlib.metadata.version("mitogen")
+except importlib.metadata.PackageNotFoundError:
+    raise ImportError("Unable to load mitogen module.")
 
-with patching.patch_version():
+if mitogen_version == "0.3.4":
+    from . import patching
+
+    with patching.patch_version():
+        from ansible_mitogen.plugins.strategy.mitogen_free import *
+else:
     from ansible_mitogen.plugins.strategy.mitogen_free import *
