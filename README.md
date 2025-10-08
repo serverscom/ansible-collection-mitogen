@@ -13,6 +13,7 @@ Tested versions of ansible-core:
 * 2.15
 * 2.16
 * 2.17
+* 2.18
 
 When needed, it patches `ansible_mitogen` code and unpatches it
 back right after module import, so the original
@@ -24,7 +25,7 @@ If no patching needed, it just passes mitogen content as it is.
 To use this collection, you need to install Mitogen:
 
 ```bash
-pip install mitogen==0.3.4
+pip install mitogen==0.3.29
 ```
 
 Then, you need to install this collection:
