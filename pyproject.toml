@@ -4,12 +4,13 @@ version = "1.0.1"
 description = "Ansible collection to expose mitogen strategies with mitogen patching"
 authors =["Sergey Putko <psvmcc+ansible-galaxy@gmail.com>", "George Shuklin <george.shuklin@gmail.com>"]
 license = "BSD/MIT"
+package-mode = false
 
 [tool.poetry.dependencies]
-python = ">=3.10, <3.13"
-ansible-core = ">=2.17, <2.18"
+python = ">=3.11, <3.14"
+ansible-core = ">=2.17, <2.19.0"
 black = "^23.1.0"
-mitogen = "0.3.12"
+mitogen = "0.3.29"
 molecule = ">=5.0.0"
 yamllint = "^1.29.0"
 
