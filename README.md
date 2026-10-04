@@ -3,7 +3,7 @@
 This collection allows to use [Mitogen](https://github.com/mitogen-hq/mitogen)
 strategy without the need to specify absolute path to the strategy file.
 
-It also performs live patching for oler versions of Mitogen (3.4), removing
+It also performs live patching for older versions of Mitogen (3.4), removing
 Ansible version restrictions, making it possible to use Mitogen
 on unsupported versions.
 
@@ -14,6 +14,9 @@ Tested versions of ansible-core:
 * 2.16
 * 2.17
 * 2.18
+* 2.19
+* 2.20
+* 2.21
 
 When needed, it patches `ansible_mitogen` code and unpatches it
 back right after module import, so the original
@@ -25,7 +28,7 @@ If no patching needed, it just passes mitogen content as it is.
 To use this collection, you need to install Mitogen:
 
 ```bash
-pip install mitogen==0.3.29
+pip install mitogen==0.3.53
 ```
 
 Then, you need to install this collection:

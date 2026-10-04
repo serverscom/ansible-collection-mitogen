@@ -21,22 +21,22 @@ subprocess-tee = ">=0.4.1"
 
 [[package]]
 name = "ansible-core"
-version = "2.18.10"
+version = "2.21.4"
 description = "Radically simple IT automation"
 optional = false
-python-versions = ">=3.11"
+python-versions = ">=3.12"
 groups = ["main"]
 files = [
-    {file = "ansible_core-2.18.10-py3-none-any.whl", hash = "sha256:f8078bc7f5b87a26ce125274b91adb8175a90e35717a166989c69e86e791b0d7"},
-    {file = "ansible_core-2.18.10.tar.gz", hash = "sha256:99e614cdb6f49b5f08935d7772bae3ae41d06216ec8f3a0fbc6952f4951c6127"},
+    {file = "ansible_core-2.21.4-py3-none-any.whl", hash = "sha256:ebe74d9c8fadcb41ad2151e031bf1e785e3098aaa015019b4e19a0a96f0dcc4f"},
+    {file = "ansible_core-2.21.4.tar.gz", hash = "sha256:81a9329f4f12cfa5008dcab5d1bf23ae69b7effc08c0f00048ab2461147ae95a"},
 ]
 
 [package.dependencies]
 cryptography = "*"
-jinja2 = ">=3.0.0"
+jinja2 = ">=3.1.0"
 packaging = "*"
 PyYAML = ">=5.1"
-resolvelib = ">=0.5.3,<1.1.0"
+resolvelib = ">=0.8.0,<2.0.0"
 
 [[package]]
 name = "attrs"
@@ -538,14 +538,14 @@ files = [
 
 [[package]]
 name = "mitogen"
-version = "0.3.29"
+version = "0.3.53"
 description = "Library for writing distributed self-replicating programs."
 optional = false
-python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,>=2.7"
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,>=2.4"
 groups = ["main"]
 files = [
-    {file = "mitogen-0.3.29-py2.py3-none-any.whl", hash = "sha256:b1a6bb09b0d9fd2f3fad1e2ea808a64e210fd8fb9bf887182a7fe7dc7f5a8d8a"},
-    {file = "mitogen-0.3.29.tar.gz", hash = "sha256:dd0d6f0046e53409325cec43e7fa727b62f48dd09c4a2c06586886aa8fdb12ba"},
+    {file = "mitogen-0.3.53-py2.py3-none-any.whl", hash = "sha256:8858bbff6b8bd5f8cccac4ef08190fde7113dbc36bc320425aefffd56b052f03"},
+    {file = "mitogen-0.3.53.tar.gz", hash = "sha256:435036128dd2715945c3c26f390439ecc3ae9d873ea2e69ac1f7982c88a02b87"},
 ]
 
 [[package]]
@@ -1001,7 +1001,7 @@ description = "Backported and Experimental Type Hints for Python 3.9+"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "python_version < \"3.13\""
+markers = "python_version == \"3.12\""
 files = [
     {file = "typing_extensions-4.15.0-py3-none-any.whl", hash = "sha256:f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548"},
     {file = "typing_extensions-4.15.0.tar.gz", hash = "sha256:0cea48d173cc12fa28ecabc3b837ea3cf6f38c6d1136f85cbaaf598984861466"},
@@ -1043,5 +1043,5 @@ dev = ["doc8", "flake8", "flake8-import-order", "rstcheck[sphinx]", "sphinx"]
 
 [metadata]
 lock-version = "2.1"
-python-versions = ">=3.11, <3.14"
-content-hash = "9261060e239422d3cdd4afb63eaf10517094d85298f46b27712375e165f854f3"
+python-versions = ">=3.12, <3.15"
+content-hash = "6a526ce6103e65a48d1144973d6fa14eecd54c74afc68d9dffb4fd72b26222c6"
